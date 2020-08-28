@@ -42,5 +42,4 @@ private:
 	void GetRoomSize();
 	void GenerateNetwork(const UNavigationSystemV1* navSys);
 	void CreateMovementNetwork(const UNavigationSystemV1* navSys);
-	void DebugDraw();
 };

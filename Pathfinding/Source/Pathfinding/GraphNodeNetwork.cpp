@@ -8,8 +8,6 @@ UGraphNodeNetwork::UGraphNodeNetwork()
 void UGraphNodeNetwork::BeginPlay()
 {
 	Super::BeginPlay();
-	CreateNetwork();
-	DebugDraw();
 }
 
 void UGraphNodeNetwork::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
@@ -150,21 +148,6 @@ void UGraphNodeNetwork::CreateMovementNetwork(const UNavigationSystemV1* navSys)
 					}
 				}
 			}
-		}
-	}
-}
-
-void UGraphNodeNetwork::DebugDraw()
-{
-	FColor blue = FColor(0, 0, 255);
-	FColor cyan = FColor(0, 255, 255);
-
-	for (UGraphNode* node : nodes)
-	{
-		DrawDebugPoint(GetWorld(), node->GetCoordinates(), 10, blue, true, 0.0f);
-		for (TPair<UGraphNode*, float> neighbour : node->GetNeighbours())
-		{
-			DrawDebugLine(GetWorld(), node->GetCoordinates(), neighbour.Key->GetCoordinates(), cyan, true, 100.0f);
 		}
 	}
 }
