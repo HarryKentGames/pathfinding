@@ -13,8 +13,8 @@ TArray<const UGraphNode*> UAStarPathfinder::FindAStarPath(TArray<UGraphNode*> gr
 	//Initialise the record for the starting node:
 	UAStarNodeRecord* startRecord = UAStarNodeRecord::MAKE(start, nullptr, 0.0f, 0.0f);
 	//Initialise the necessary data structures:
-	UBucketedPriorityQueue* open = NewObject<UBucketedPriorityQueue>();
-	UBucketedPriorityQueue* closed = NewObject<UBucketedPriorityQueue>();
+	UBucketedPriorityQueue<UAStarNodeRecord>* open = new UBucketedPriorityQueue<UAStarNodeRecord>();
+	UBucketedPriorityQueue<UAStarNodeRecord>* closed = new UBucketedPriorityQueue<UAStarNodeRecord>();
 	open->AddElement(startRecord, 0);
 	UAStarNodeRecord* currentRecord = NewObject<UAStarNodeRecord>();
 	//Process each node that is added to the open array:
