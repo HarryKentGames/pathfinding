@@ -3,6 +3,7 @@
 #include "CoreMinimal.h"
 #include "Components/SceneComponent.h"
 #include "AStarPathfinder.h"
+#include "DijkstraPathfinder.h"
 #include "GraphNodeNetwork.h"
 #include "PathfindingController.generated.h"
 

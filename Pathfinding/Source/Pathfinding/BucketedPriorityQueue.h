@@ -1,19 +1,16 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "AStarNodeRecord.h"
+#include "GraphNode.h"
 #include "UObject/NoExportTypes.h"
-//#include "BucketedPriorityQueue.generated.h"
-
-
-//typedef TSet<UAStarNodeRecord*> Bucket;
-//typedef TMap<float, Bucket> Queue;
-//typedef TMap<UAStarNodeRecord*, float> ValueMap;
-//typedef TMap<const UGraphNode*, UAStarNodeRecord*> RecordMap;
 
 template <class T>
 class UBucketedPriorityQueue
 {
+    using Bucket = TSet<T*>;
+    using Queue = TMap<float, Bucket>;
+    using ValueMap = TMap<T*, float>;
+    using RecordMap = TMap<const UGraphNode*, T*>;
 public:
     UBucketedPriorityQueue()
     {
@@ -33,7 +30,7 @@ public:
         }
         else
         {
-            queue.Add(value, TSet<T*>());
+            queue.Add(value, Bucket());
             queue[value].Add(id);
             valueMap.Add(id, value);
             recordMap.Add(id->node, id);
@@ -69,7 +66,7 @@ public:
 
     bool ModifyElement(T* id, float oldValue, float newValue)
     {
-        TSet<T*>* bucket = queue.Find(oldValue);
+        Bucket* bucket = queue.Find(oldValue);
         if (bucket == nullptr)
         {
             return false; //Element not found.
@@ -87,7 +84,7 @@ public:
             return false; //Queue is empty.
         }
 
-        const TSet<T*>& bucket = queue.begin().Value();
+        const Bucket& bucket = queue.begin().Value();
 
         if (bucket.begin() == bucket.end())
         {
@@ -134,7 +131,7 @@ public:
     }
 
 private:
-    TMap<float, TSet<T*>> queue;
-    TMap<T*, float> valueMap;
-    TMap<const UGraphNode*, T*> recordMap;
+    Queue queue;
+    ValueMap valueMap;
+    RecordMap recordMap;
 };

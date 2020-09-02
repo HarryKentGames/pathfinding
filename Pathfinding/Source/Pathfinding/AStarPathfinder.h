@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "AStarNodeRecord.h"
 #include "BucketedPriorityQueue.h"
 #include "UObject/NoExportTypes.h"
 #include "AStarPathfinder.generated.h"

@@ -12,7 +12,7 @@ void UPathfindingController::BeginPlay()
 	graph = graphController->CreateNetwork();
 	if (startIndex >= 0 && startIndex < graph.Num() && endIndex >= 0 && endIndex < graph.Num())
 	{
-		TArray<const UGraphNode*> path = UAStarPathfinder::FindAStarPath(graph, graph[startIndex], graph[endIndex], EuclideanDistance(graph[endIndex]));
+		TArray<const UGraphNode*> path = UDijkstraPathfinder::FindDijkstraPath(graph, graph[startIndex], graph[endIndex]);
 		DrawPath(path);
 	}
 }
