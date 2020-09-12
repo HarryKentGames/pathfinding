@@ -3,6 +3,7 @@
 #include "CoreMinimal.h"
 #include "Components/SceneComponent.h"
 #include "AStarPathfinder.h"
+#include <chrono>
 #include "DijkstraPathfinder.h"
 #include "GraphNodeNetwork.h"
 #include "PathfindingController.generated.h"
@@ -30,5 +31,5 @@ private:
 	TArray<UGraphNode*> graph;
 
 	void DebugDraw();
-	void DrawPath(TArray<const UGraphNode*> path);
+	void DrawPath(TArray<const UGraphNode*> path, FColor color);
 };

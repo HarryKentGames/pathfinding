@@ -8,10 +8,10 @@ UAStarPathfinder::~UAStarPathfinder()
 {
 }
 
-TArray<const UGraphNode*> UAStarPathfinder::FindAStarPath(TArray<UGraphNode*> graph, UGraphNode* start, UGraphNode* end, Heuristic heuristic)
+TArray<const UGraphNode*> UAStarPathfinder::FindAStarPath(TArray<UGraphNode*> graph, UGraphNode* start, UGraphNode* end, Heuristic* heuristic)
 {
 	//Initialise the record for the starting node:
-	UAStarNodeRecord* startRecord = UAStarNodeRecord::MAKE(start, nullptr, 0.0f, 0.0f);
+	UAStarNodeRecord* startRecord = UAStarNodeRecord::MAKE(start, nullptr, 0.0f, heuristic->Estimate(start));
 	//Initialise the necessary data structures:
 	UBucketedPriorityQueue<UAStarNodeRecord>* open = new UBucketedPriorityQueue<UAStarNodeRecord>();
 	UBucketedPriorityQueue<UAStarNodeRecord>* closed = new UBucketedPriorityQueue<UAStarNodeRecord>();
@@ -68,7 +68,7 @@ TArray<const UGraphNode*> UAStarPathfinder::FindAStarPath(TArray<UGraphNode*> gr
 			else
 			{
 				connectedNodeRecord->node = connectedNode.Key;
-				connectedNodeHeuristic = heuristic.Estimate(connectedNodeRecord->node);
+				connectedNodeHeuristic = heuristic->Estimate(connectedNodeRecord->node);
 			}
 			float oldEstimatedCost = connectedNodeRecord->estimatedTotalCost;
 			//Update the values associated with the record:
@@ -89,6 +89,7 @@ TArray<const UGraphNode*> UAStarPathfinder::FindAStarPath(TArray<UGraphNode*> gr
 		open->RemoveElement(currentRecord);
 		closed->AddElement(currentRecord, currentRecord->estimatedTotalCost);
 	}
+
 	//If the current record is for the end node, there is a valid path, otherwise there is not:
 	if (currentRecord->node != end)
 	{

@@ -47,6 +47,6 @@ public:
 	UAStarPathfinder();
 	~UAStarPathfinder();
 
-	static TArray<const UGraphNode*> FindAStarPath(TArray<UGraphNode*> graph, UGraphNode* start, UGraphNode* end, Heuristic heuristic);
+	static TArray<const UGraphNode*> FindAStarPath(TArray<UGraphNode*> graph, UGraphNode* start, UGraphNode* end, Heuristic* heuristic);
 	
 };
