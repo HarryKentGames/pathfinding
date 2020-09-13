@@ -8,7 +8,7 @@ UAStarPathfinder::~UAStarPathfinder()
 {
 }
 
-TArray<const UGraphNode*> UAStarPathfinder::FindAStarPath(TArray<UGraphNode*> graph, UGraphNode* start, UGraphNode* end, Heuristic* heuristic)
+TArray<const UGraphNode*> UAStarPathfinder::FindAStarPath(TArray<UGraphNode*> graph, UGraphNode* start, UGraphNode* end, Heuristic* heuristic, TArray<const UGraphNode*> &visitedNodes)
 {
 	//Initialise the record for the starting node:
 	UAStarNodeRecord* startRecord = UAStarNodeRecord::MAKE(start, nullptr, 0.0f, heuristic->Estimate(start));
@@ -88,6 +88,7 @@ TArray<const UGraphNode*> UAStarPathfinder::FindAStarPath(TArray<UGraphNode*> gr
 		//Move the current record to the closed list as it has been analysed:
 		open->RemoveElement(currentRecord);
 		closed->AddElement(currentRecord, currentRecord->estimatedTotalCost);
+		visitedNodes.Add(currentRecord->node);
 	}
 
 	//If the current record is for the end node, there is a valid path, otherwise there is not:

@@ -8,7 +8,7 @@ UDijkstraPathfinder::~UDijkstraPathfinder()
 {
 }
 
-TArray<const UGraphNode*> UDijkstraPathfinder::FindDijkstraPath(TArray<UGraphNode*> graph, UGraphNode* start, UGraphNode* end)
+TArray<const UGraphNode*> UDijkstraPathfinder::FindDijkstraPath(TArray<UGraphNode*> graph, UGraphNode* start, UGraphNode* end, TArray<const UGraphNode*> &visitedNodes)
 {
 	UDijkstraNodeRecord* startRecord = UDijkstraNodeRecord::MAKE(start, nullptr, 0.0f);
 
@@ -64,6 +64,7 @@ TArray<const UGraphNode*> UDijkstraPathfinder::FindDijkstraPath(TArray<UGraphNod
 		}
 		open->RemoveElement(currentRecord);
 		closed->AddElement(currentRecord, currentRecord->costSoFar);
+		visitedNodes.Add(currentRecord->node);
 	}
 
 	if (currentRecord->node != end)

@@ -6,8 +6,22 @@
 #include <chrono>
 #include "DijkstraPathfinder.h"
 #include "GraphNodeNetwork.h"
+#include "Kismet/GameplayStatics.h"
 #include "PathfindingController.generated.h"
 
+struct PathfindingDebugInformation
+{
+	float timeTaken;
+	TArray<const UGraphNode*> visitedNodes;
+	TArray<const UGraphNode*> path;
+};
+
+UENUM()
+enum DebugView
+{
+	Path     UMETA(DisplayName = "Path"),
+	Visited      UMETA(DisplayName = "Visited"),
+};
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class PATHFINDING_API UPathfindingController : public USceneComponent
@@ -16,20 +30,26 @@ class PATHFINDING_API UPathfindingController : public USceneComponent
 
 public:	
 	UPathfindingController();
+
+	static UPathfindingController* FindInstanceInWorld(UWorld* world);
+
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+
+	void RunPathfinding(int startIndex, int endIndex);
+	float CalculatePathLength(TArray<const UGraphNode*> path);
+
+	PathfindingDebugInformation aStarDebugInfo;
+	PathfindingDebugInformation dijkstraDebugInfo;
+
+	PathfindingDebugInformation* currentDebugInfo;
+	TEnumAsByte<DebugView> debugView;
 
 protected:
 	virtual void BeginPlay() override;
 
 private:
-	UPROPERTY(EditAnywhere)
-	int startIndex;
-	UPROPERTY(EditAnywhere)
-	int endIndex;
-
 	UGraphNodeNetwork* graphController;
 	TArray<UGraphNode*> graph;
 
-	void DebugDraw();
 	void DrawPath(TArray<const UGraphNode*> path, FColor color);
 };

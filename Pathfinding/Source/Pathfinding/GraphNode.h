@@ -20,7 +20,7 @@ public:
 	FVector GetCoordinates() const;
 	int GetIndex();
 	void AddNeighbour(UGraphNode* neighbour, float distance);
-	TMap<UGraphNode*, float> GetNeighbours();
+	TMap<UGraphNode*, float> GetNeighbours() const;
 
 private:
 	UPROPERTY()

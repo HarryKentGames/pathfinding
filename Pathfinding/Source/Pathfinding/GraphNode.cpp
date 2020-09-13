@@ -43,7 +43,7 @@ void UGraphNode::AddNeighbour(UGraphNode* neighbour, float distance)
 	neighbours.Add(neighbour, distance);
 }
 
-TMap<UGraphNode*, float> UGraphNode::GetNeighbours()
+TMap<UGraphNode*, float> UGraphNode::GetNeighbours() const
 {
 	return neighbours;
 }

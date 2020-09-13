@@ -14,5 +14,5 @@ public:
 	UDijkstraPathfinder();
 	~UDijkstraPathfinder();
 
-	static TArray<const UGraphNode*> FindDijkstraPath(TArray<UGraphNode*> graph, UGraphNode* start, UGraphNode* end);
+	static TArray<const UGraphNode*> FindDijkstraPath(TArray<UGraphNode*> graph, UGraphNode* start, UGraphNode* end, TArray<const UGraphNode*> &visitedNodes);
 };
