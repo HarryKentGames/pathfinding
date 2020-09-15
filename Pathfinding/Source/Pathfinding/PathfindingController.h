@@ -38,10 +38,11 @@ public:
 	void RunPathfinding(int startIndex, int endIndex);
 	float CalculatePathLength(TArray<const UGraphNode*> path);
 
-	PathfindingDebugInformation aStarDebugInfo;
-	PathfindingDebugInformation dijkstraDebugInfo;
+	PathfindingDebugInformation* GetAStarDebugInfo();
+	PathfindingDebugInformation* GetDijkstraDebugInfo();
+	void SetCurrentDebugInfo(PathfindingDebugInformation* newDebugInfo);
+	PathfindingDebugInformation* GetCurrentDebugInfo() const;
 
-	PathfindingDebugInformation* currentDebugInfo;
 	TEnumAsByte<DebugView> debugView;
 
 protected:
@@ -51,5 +52,10 @@ private:
 	UGraphNodeNetwork* graphController;
 	TArray<UGraphNode*> graph;
 
-	void DrawPath(TArray<const UGraphNode*> path, FColor color);
+	PathfindingDebugInformation aStarDebugInfo;
+	PathfindingDebugInformation dijkstraDebugInfo;
+
+	PathfindingDebugInformation* currentDebugInfo;
+
+	void DrawNodes(TArray<const UGraphNode*> path, FColor color, bool connect);
 };

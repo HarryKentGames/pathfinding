@@ -9,7 +9,7 @@ void SPathfindingMenuWidget::Construct(const FArguments& InArgs)
 	OwningHUD = InArgs._OwningHUD;
 
 	const FMargin contentPadding = FMargin(10.0f, 10.0f);
-	const FMargin buttonPadding = FMargin(10.0f);
+	const FMargin buttonPadding = FMargin(10.0f, 0.0f);
 
 	const FText menuTitleText = LOCTEXT("MenuTitle", "Menu:");
 
@@ -22,107 +22,142 @@ void SPathfindingMenuWidget::Construct(const FArguments& InArgs)
 	ChildSlot
 	[
 		SNew(SOverlay)
+
 		+ SOverlay::Slot()
 		.HAlign(HAlign_Right)
 		.VAlign(VAlign_Top)
 		.Padding(contentPadding)
 		[
-			SNew(SVerticalBox)
-
-			+ SVerticalBox::Slot()
+			SNew(SBorder)
+			.BorderBackgroundColor(FColor::Black)
 			[
-				SNew(STextBlock)
-				.Font(titleTextStyle)
-				.Text(menuTitleText)
-				.Justification(ETextJustify::Center)
-			]
-			
-			+ SVerticalBox::Slot()
-			[
-				SNew(SNumericEntryBox<int32>)
-				.Value(this, &SPathfindingMenuWidget::GetStartIndex)
-				.OnValueChanged(this, &SPathfindingMenuWidget::SetStartIndex)
-			]
-
-			+ SVerticalBox::Slot()
-			[
-				SNew(SNumericEntryBox<int32>)
-				.Value(this, &SPathfindingMenuWidget::GetEndIndex)
-				.OnValueChanged(this, &SPathfindingMenuWidget::SetEndIndex)
-			]
-
-			+ SVerticalBox::Slot()
-			.Padding(buttonPadding)
-			[
-				SNew(SButton)
-				.OnClicked(this, &SPathfindingMenuWidget::ToggleAlgorithmVisualiser)
+				SNew(SOverlay)
+				+SOverlay::Slot()
 				[
-					SNew(STextBlock)
-					.Font(buttonTextStyle)
-					.Text(this, &SPathfindingMenuWidget::GetAlgorithmButtonText)
-					.Justification(ETextJustify::Center)
-				]
-			]
-
-			+ SVerticalBox::Slot()
-				.Padding(buttonPadding)
-				[
-					SNew(SButton)
-					.OnClicked(this, &SPathfindingMenuWidget::ToggleView)
-				[
-					SNew(STextBlock)
-					.Font(buttonTextStyle)
-				.Text(this, &SPathfindingMenuWidget::GetViewButtonText)
-				.Justification(ETextJustify::Center)
-				]
+					SNew(SImage)
+					.ColorAndOpacity(FColor::Black)
 				]
 
-			+ SVerticalBox::Slot()
-			[
-				SNew(STextBlock)
-				.Font(titleTextStyle)
-				.Text(this, &SPathfindingMenuWidget::GetAStarTimeTaken)
-				.Justification(ETextJustify::Center)
-			]
+				+ SOverlay::Slot()
+				.Padding(contentPadding)
+				[
+					SNew(SVerticalBox)
+					+ SVerticalBox::Slot()
+					[
+						SNew(STextBlock)
+						.Font(titleTextStyle)
+						.Text(menuTitleText)
+						.Justification(ETextJustify::Center)
+					]
+					+ SVerticalBox::Slot()
+					[
+						SNew(SHorizontalBox)
+						+ SHorizontalBox::Slot()
+						[
+							SNew(STextBlock)
+							.Font(buttonTextStyle)
+							.Text(FText::FromString("Start Node:"))
+							.Justification(ETextJustify::Center)
+						]
+						+ SHorizontalBox::Slot()
+						[
+							SNew(SNumericEntryBox<int32>)
+							.Value(this, &SPathfindingMenuWidget::GetStartIndex)
+							.OnValueChanged(this, &SPathfindingMenuWidget::SetStartIndex)
+						]
+					]
+					+ SVerticalBox::Slot()
+					[
+						SNew(SHorizontalBox)
+						+ SHorizontalBox::Slot()
+						[
+							SNew(STextBlock)
+							.Font(buttonTextStyle)
+							.Text(FText::FromString("End Node:"))
+							.Justification(ETextJustify::Center)
+						]
+						+ SHorizontalBox::Slot()
+						[
+							SNew(SNumericEntryBox<int32>)
+							.Value(this, &SPathfindingMenuWidget::GetEndIndex)
+							.OnValueChanged(this, &SPathfindingMenuWidget::SetEndIndex)
+						]
+					]
 
-			+ SVerticalBox::Slot()
-			[
-				SNew(STextBlock)
-				.Font(titleTextStyle)
-				.Text(this, &SPathfindingMenuWidget::GetAStarPathLength)
-				.Justification(ETextJustify::Center)
-			]
+					+ SVerticalBox::Slot()
+					.Padding(buttonPadding)
+					[
+						SNew(SButton)
+						.OnClicked(this, &SPathfindingMenuWidget::ToggleAlgorithmVisualiser)
+						[
+							SNew(STextBlock)
+							.Font(buttonTextStyle)
+							.Text(this, &SPathfindingMenuWidget::GetAlgorithmButtonText)
+							.Justification(ETextJustify::Center)
+						]
+					]
 
-			+ SVerticalBox::Slot()
-			[
-				SNew(STextBlock)
-				.Font(titleTextStyle)
-				.Text(this, &SPathfindingMenuWidget::GetAStarVisitedNodeCount)
-				.Justification(ETextJustify::Center)
-			]
+					+ SVerticalBox::Slot()
+					.Padding(buttonPadding)
+					[
+						SNew(SButton)
+						.OnClicked(this, &SPathfindingMenuWidget::ToggleView)
+						[
+							SNew(STextBlock)
+							.Font(buttonTextStyle)
+							.Text(this, &SPathfindingMenuWidget::GetViewButtonText)
+							.Justification(ETextJustify::Center)
+						]
+					]
 
-			+ SVerticalBox::Slot()
-			[
-				SNew(STextBlock)
-				.Font(titleTextStyle)
-				.Text(this, &SPathfindingMenuWidget::GetDijkstraTimeTaken)
-				.Justification(ETextJustify::Center)
-			]
+					+ SVerticalBox::Slot()
+					[
+						SNew(STextBlock)
+						.Font(titleTextStyle)
+						.Text(this, &SPathfindingMenuWidget::GetAStarTimeTaken)
+						.Justification(ETextJustify::Center)
+					]
 
-			+ SVerticalBox::Slot()
-			[
-				SNew(STextBlock)
-				.Font(titleTextStyle)
-				.Text(this, &SPathfindingMenuWidget::GetDijkstraPathLength)
-				.Justification(ETextJustify::Center)
-			]
+					+ SVerticalBox::Slot()
+					[
+						SNew(STextBlock)
+						.Font(titleTextStyle)
+						.Text(this, &SPathfindingMenuWidget::GetAStarPathLength)
+						.Justification(ETextJustify::Center)
+					]
 
-			+ SVerticalBox::Slot()
-			[
-				SNew(STextBlock)
-				.Font(titleTextStyle)
-				.Text(this, &SPathfindingMenuWidget::GetDijkstraVisitedNodeCount)
-				.Justification(ETextJustify::Center)
+					+ SVerticalBox::Slot()
+					[
+						SNew(STextBlock)
+						.Font(titleTextStyle)
+						.Text(this, &SPathfindingMenuWidget::GetAStarVisitedNodeCount)
+						.Justification(ETextJustify::Center)
+					]
+
+					+ SVerticalBox::Slot()
+					[
+						SNew(STextBlock)
+						.Font(titleTextStyle)
+						.Text(this, &SPathfindingMenuWidget::GetDijkstraTimeTaken)
+						.Justification(ETextJustify::Center)
+					]
+
+					+ SVerticalBox::Slot()
+					[
+						SNew(STextBlock)
+						.Font(titleTextStyle)
+						.Text(this, &SPathfindingMenuWidget::GetDijkstraPathLength)
+						.Justification(ETextJustify::Center)
+					]
+
+					+ SVerticalBox::Slot()
+					[
+						SNew(STextBlock)
+						.Font(titleTextStyle)
+						.Text(this, &SPathfindingMenuWidget::GetDijkstraVisitedNodeCount)
+						.Justification(ETextJustify::Center)
+					]
+				]
 			]
 		]
 	];
@@ -173,7 +208,7 @@ FText SPathfindingMenuWidget::GetAStarTimeTaken() const
 	{
 		if (UPathfindingController* pathfindingController = OwningHUD->pathfindingController)
 		{
-			return FText::Format(NSLOCTEXT("PathfindingMenu", "A*TimeTaken", "A* Time Taken: {0}"), FText::AsNumber(pathfindingController->aStarDebugInfo.timeTaken));
+			return FText::Format(NSLOCTEXT("PathfindingMenu", "A*TimeTaken", "A* Time Taken: {0} ms"), FText::AsNumber(pathfindingController->GetAStarDebugInfo()->timeTaken));
 		}
 	}
 	return FText();
@@ -185,7 +220,7 @@ FText SPathfindingMenuWidget::GetAStarPathLength() const
 	{
 		if (UPathfindingController* pathfindingController = OwningHUD->pathfindingController)
 		{
-			return FText::Format(NSLOCTEXT("PathfindingMenu", "A*PathLength", "A* Path Length: {0}"), FText::AsNumber(pathfindingController->CalculatePathLength(pathfindingController->aStarDebugInfo.path)));
+			return FText::Format(NSLOCTEXT("PathfindingMenu", "A*PathLength", "A* Path Length: {0}"), FText::AsNumber(pathfindingController->CalculatePathLength(pathfindingController->GetAStarDebugInfo()->path)));
 		}
 	}
 	return FText();
@@ -197,7 +232,7 @@ FText SPathfindingMenuWidget::GetAStarVisitedNodeCount() const
 	{
 		if (UPathfindingController* pathfindingController = OwningHUD->pathfindingController)
 		{
-			return FText::Format(NSLOCTEXT("PathfindingMenu", "A*NodesVisited", "A* Nodes Visited: {0}"), FText::AsNumber(pathfindingController->aStarDebugInfo.visitedNodes.Num()));
+			return FText::Format(NSLOCTEXT("PathfindingMenu", "A*NodesVisited", "A* Nodes Visited: {0}"), FText::AsNumber(pathfindingController->GetAStarDebugInfo()->visitedNodes.Num()));
 		}
 	}
 	return FText();
@@ -209,7 +244,7 @@ FText SPathfindingMenuWidget::GetDijkstraTimeTaken() const
 	{
 		if (UPathfindingController* pathfindingController = OwningHUD->pathfindingController)
 		{
-			return FText::Format(NSLOCTEXT("PathfindingMenu", "DijkstraTimeTaken", "Dijkstra Time Taken: {0}"), FText::AsNumber(pathfindingController->dijkstraDebugInfo.timeTaken));
+			return FText::Format(NSLOCTEXT("PathfindingMenu", "DijkstraTimeTaken", "Dijkstra Time Taken: {0} ms"), FText::AsNumber(pathfindingController->GetDijkstraDebugInfo()->timeTaken));
 		}
 	}
 	return FText();
@@ -221,7 +256,7 @@ FText SPathfindingMenuWidget::GetDijkstraPathLength() const
 	{
 		if (UPathfindingController* pathfindingController = OwningHUD->pathfindingController)
 		{
-			return FText::Format(NSLOCTEXT("PathfindingMenu", "DijkstraPathLength", "Dijkstra Path Length: {0}"), FText::AsNumber(pathfindingController->CalculatePathLength(pathfindingController->dijkstraDebugInfo.path)));
+			return FText::Format(NSLOCTEXT("PathfindingMenu", "DijkstraPathLength", "Dijkstra Path Length: {0}"), FText::AsNumber(pathfindingController->CalculatePathLength(pathfindingController->GetDijkstraDebugInfo()->path)));
 		}
 	}
 	return FText();
@@ -233,7 +268,7 @@ FText SPathfindingMenuWidget::GetDijkstraVisitedNodeCount() const
 	{
 		if (UPathfindingController* pathfindingController = OwningHUD->pathfindingController)
 		{
-			return FText::Format(NSLOCTEXT("PathfindingMenu", "DijkstraNodesVisited", "Dijkstra Nodes Visited: {0}"), FText::AsNumber(pathfindingController->dijkstraDebugInfo.visitedNodes.Num()));
+			return FText::Format(NSLOCTEXT("PathfindingMenu", "DijkstraNodesVisited", "Dijkstra Nodes Visited: {0}"), FText::AsNumber(pathfindingController->GetDijkstraDebugInfo()->visitedNodes.Num()));
 		}
 	}
 	return FText();
@@ -245,7 +280,7 @@ FReply SPathfindingMenuWidget::ToggleAlgorithmVisualiser()
 	{
 		if (UPathfindingController* pathfindingController = OwningHUD->pathfindingController)
 		{
-			pathfindingController->currentDebugInfo = pathfindingController->currentDebugInfo == &pathfindingController->dijkstraDebugInfo ? &pathfindingController->aStarDebugInfo : &pathfindingController->dijkstraDebugInfo;
+			pathfindingController->SetCurrentDebugInfo(pathfindingController->GetCurrentDebugInfo() == pathfindingController->GetDijkstraDebugInfo() ? pathfindingController->GetAStarDebugInfo() : pathfindingController->GetDijkstraDebugInfo());
 		}
 	}
 	return FReply::Handled();
@@ -257,7 +292,7 @@ FText SPathfindingMenuWidget::GetAlgorithmButtonText() const
 	{
 		if (UPathfindingController* pathfindingController = OwningHUD->pathfindingController)
 		{
-			return pathfindingController->currentDebugInfo == &pathfindingController->dijkstraDebugInfo ? FText::FromString("Switch to A*") : FText::FromString("Switch to Dijkstras");
+			return pathfindingController->GetCurrentDebugInfo() == pathfindingController->GetDijkstraDebugInfo() ? FText::FromString("Switch to A*") : FText::FromString("Switch to Dijkstras");
 		}
 	}
 	return FText();

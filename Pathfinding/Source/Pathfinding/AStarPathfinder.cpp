@@ -17,7 +17,7 @@ TArray<const UGraphNode*> UAStarPathfinder::FindAStarPath(TArray<UGraphNode*> gr
 	UBucketedPriorityQueue<UAStarNodeRecord>* closed = new UBucketedPriorityQueue<UAStarNodeRecord>();
 	open->AddElement(startRecord, 0);
 	UAStarNodeRecord* currentRecord = NewObject<UAStarNodeRecord>();
-	//Process each node that is added to the open array:
+	//Process each node that is added to the open list:
 	while (!open->IsEmpty())
 	{
 		//Get the best estimated node:
@@ -105,6 +105,7 @@ TArray<const UGraphNode*> UAStarPathfinder::FindAStarPath(TArray<UGraphNode*> gr
 			path.EmplaceAt(0, currentRecord->node);
 			currentRecord = currentRecord->connectedNode;
 		}
+		path.EmplaceAt(0, currentRecord->node);
 		return path;
 	}
 }

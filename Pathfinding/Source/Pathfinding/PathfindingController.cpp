@@ -37,7 +37,6 @@ void UPathfindingController::RunPathfinding(int startIndex, int endIndex)
 		TArray<const UGraphNode*> visitedNodes = TArray<const UGraphNode*>();
 		TArray<const UGraphNode*> path = UAStarPathfinder::FindAStarPath(graph, graph[startIndex], graph[endIndex], new EuclideanDistance(graph[endIndex]), visitedNodes);
 		auto end = std::chrono::high_resolution_clock::now();
-		DrawPath(path, FColor(0, 255, 0));
 
 		aStarDebugInfo.timeTaken = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
 		aStarDebugInfo.path = path;
@@ -64,25 +63,48 @@ float UPathfindingController::CalculatePathLength(TArray<const UGraphNode*> path
 	return pathLength;
 }
 
+PathfindingDebugInformation* UPathfindingController::GetAStarDebugInfo()
+{
+	return &aStarDebugInfo;
+}
+
+PathfindingDebugInformation* UPathfindingController::GetDijkstraDebugInfo()
+{
+	return &dijkstraDebugInfo;
+}
+
+void UPathfindingController::SetCurrentDebugInfo(PathfindingDebugInformation* newDebugInfo)
+{
+	currentDebugInfo = newDebugInfo;
+}
+
+PathfindingDebugInformation* UPathfindingController::GetCurrentDebugInfo() const
+{
+	return currentDebugInfo;
+}
+
 void UPathfindingController::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 	if (debugView == DebugView::Path)
 	{
-		DrawPath(currentDebugInfo->path, FColor(0, 255, 0));
+		DrawNodes(currentDebugInfo->path, FColor(0, 255, 0), true);
 	}
 	else if (debugView == DebugView::Visited)
 	{
-		DrawPath(currentDebugInfo->visitedNodes, FColor(255, 0, 0));
+		DrawNodes(currentDebugInfo->visitedNodes, FColor(255, 0, 0), false);
 	}
 }
 
-void UPathfindingController::DrawPath(TArray<const UGraphNode*> path, FColor color)
+void UPathfindingController::DrawNodes(TArray<const UGraphNode*> path, FColor color, bool connect)
 {
-	//Display all the nodes on the map, with colours representing their influence values:
 	for (int i = 0; i < path.Num(); i++)
 	{
 		DrawDebugPoint(GetWorld(), path[i]->GetCoordinates(), 10, color, false, 0.0f);
+		if (connect && i < path.Num() - 1)
+		{
+			DrawDebugLine(GetWorld(), path[i]->GetCoordinates(), path[i + 1]->GetCoordinates(), color, false, 0.0f);
+		}
 	}
 }
 
